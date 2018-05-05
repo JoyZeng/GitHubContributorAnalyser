@@ -1,7 +1,7 @@
 import requests
 import json
-import pymongo
 import settings
+import mongoDB
 
 # get organization member list from GitHub API
 def getMemberList(organization, page = 1):
@@ -14,14 +14,6 @@ def getMemberList(organization, page = 1):
     list = json.loads(r.text)
     return list
 
-# save data to local mongoDB
-def saveData(list):
-    client = pymongo.MongoClient(host=settings.MONGO_HOST, port=settings.MONGO_PORT)
-    db = client[settings.MONGO_DB]
-    collection = db[settings.MONGO_COLLECTION]
-    for item in list:
-        collection.insert(item)
-
 
 def main():
     memberList = []
@@ -33,8 +25,8 @@ def main():
         memberList = memberList + list
         page = page + 1
         list = getMemberList(organization, page)
-    #save data
-    saveData(memberList)
+    # save data to local mongoDB
+    mongoDB.saveData(settings.MONGO_HOST, settings.MONGO_PORT, settings.MONGO_DB_GITHUB, settings.MONGO_COLLECTION_FACEBOOK_MEMBERS, memberList)
 
 
 main()

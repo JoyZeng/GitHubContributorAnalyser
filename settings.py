@@ -7,9 +7,9 @@ MONGO_HOST = "127.0.0.1"
 # port
 MONGO_PORT = 27017
 # database name
-MONGO_DB = "github"
+MONGO_DB_GITHUB = "github"
 # collection name
-MONGO_COLLECTION = "facebook_members"
+MONGO_COLLECTION_FACEBOOK_MEMBERS = "facebook_members"
 
 # get organization GitHub API
 def organizationUrl(organization):

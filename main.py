@@ -1,32 +1,28 @@
-import requests
-import json
 import settings
 import mongoDB
-
-# get organization member list from GitHub API
-def getMemberList(organization, page = 1):
-    url = settings.organizationUrl(organization) \
-          + "/members?access_token=" \
-          + settings.TOKEN \
-          + "&page=" \
-          + str(page)
-    r = requests.get(url, timeout = 60)
-    list = json.loads(r.text)
-    return list
+import request
 
 
 def main():
-    memberList = []
+
     organization = "facebook"
-    page = 1
-    list = getMemberList(organization, page)
-    # keep getting data from API till there is no more data return back
-    while len(list) != 0:
-        memberList = memberList + list
-        page = page + 1
-        list = getMemberList(organization, page)
+
     # save data to local mongoDB
-    mongoDB.saveData(settings.MONGO_HOST, settings.MONGO_PORT, settings.MONGO_DB_GITHUB, settings.MONGO_COLLECTION_FACEBOOK_MEMBERS, memberList)
+    db = mongoDB.getDB(settings.MONGO_HOST, settings.MONGO_PORT, settings.MONGO_DB_GITHUB)
+    memberCollection = mongoDB.getCollectionWithDB(db, settings.MONGO_COLLECTION_MEMBERS)
+    memberInfoCollection = mongoDB.getCollectionWithDB(db, settings.MONGO_COLLECTION_MEMBERS_INFO)
+
+    # get member list from internet
+    memberList = request.getMemberListOfOrganization(organization)
+    # save list to local mongoDB
+    mongoDB.saveData(memberCollection, memberList)
+    # get a list of member username
+    list = mongoDB.getMemberUsernameList(memberCollection)
+
+    # get member information list from internet
+    infoList = request.getUserInformationList(list)
+    # save list to local mongoDB
+    mongoDB.saveData(memberInfoCollection, infoList)
 
 
 main()

@@ -9,7 +9,9 @@ MONGO_PORT = 27017
 # database name
 MONGO_DB_GITHUB = "github"
 # collection name
-MONGO_COLLECTION_FACEBOOK_MEMBERS = "facebook_members"
+MONGO_COLLECTION_MEMBERS = "members"
+# collection name
+MONGO_COLLECTION_MEMBERS_INFO = "members_information"
 
 # get organization GitHub API
 def organizationUrl(organization):

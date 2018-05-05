@@ -1,6 +1,7 @@
 import settings
 import mongoDB
-import request
+# import request
+import analyse
 
 
 def main():
@@ -12,17 +13,19 @@ def main():
     memberCollection = mongoDB.getCollectionWithDB(db, settings.MONGO_COLLECTION_MEMBERS)
     memberInfoCollection = mongoDB.getCollectionWithDB(db, settings.MONGO_COLLECTION_MEMBERS_INFO)
 
-    # get member list from internet
-    memberList = request.getMemberListOfOrganization(organization)
-    # save list to local mongoDB
-    mongoDB.saveData(memberCollection, memberList)
-    # get a list of member username
-    list = mongoDB.getMemberUsernameList(memberCollection)
+    # # get member list from internet
+    # memberList = request.getMemberListOfOrganization(organization)
+    # # save list to local mongoDB
+    # mongoDB.saveData(memberCollection, memberList)
+    # # get a list of member username
+    # list = mongoDB.getMemberUsernameList(memberCollection)
+    #
+    # # get member information list from internet
+    # infoList = request.getUserInformationList(list)
+    # # save list to local mongoDB
+    # mongoDB.saveData(memberInfoCollection, infoList)
 
-    # get member information list from internet
-    infoList = request.getUserInformationList(list)
-    # save list to local mongoDB
-    mongoDB.saveData(memberInfoCollection, infoList)
+    analyse.analyseLocations(memberInfoCollection)
 
 
 main()

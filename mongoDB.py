@@ -1,5 +1,13 @@
 import pymongo
 
+import settings
+
+
+# get default DB
+def getDefaultDB():
+    db = getDB(settings.MONGO_HOST, settings.MONGO_PORT, settings.MONGO_DB_GITHUB)
+    return db
+
 # get db with all params
 def getDB(host, port, dbName):
     client = pymongo.MongoClient(host=host, port=port)
@@ -12,6 +20,19 @@ def getDB(host, port, dbName):
 def getCollectionWithDB(db, collectionName):
     collection = db[collectionName]
     return collection
+
+# get member collection
+def getMemberCollection():
+    db = getDefaultDB()
+    memberCollection = getCollectionWithDB(db, settings.MONGO_COLLECTION_MEMBERS)
+    return memberCollection
+
+
+# get member information collection
+def getMemberInfoCollection():
+    db = getDefaultDB()
+    memberInfoCollection = getCollectionWithDB(db, settings.MONGO_COLLECTION_MEMBERS_INFO)
+    return memberInfoCollection
 
 
 # save data

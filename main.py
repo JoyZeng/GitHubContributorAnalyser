@@ -1,31 +1,29 @@
 import settings
+import request
 import mongoDB
-# import request
 import analyse
+
 
 
 def main():
 
-    organization = "facebook"
-
-    # save data to local mongoDB
-    db = mongoDB.getDB(settings.MONGO_HOST, settings.MONGO_PORT, settings.MONGO_DB_GITHUB)
-    memberCollection = mongoDB.getCollectionWithDB(db, settings.MONGO_COLLECTION_MEMBERS)
-    memberInfoCollection = mongoDB.getCollectionWithDB(db, settings.MONGO_COLLECTION_MEMBERS_INFO)
-
+    # organization = "facebook"
     # # get member list from internet
     # memberList = request.getMemberListOfOrganization(organization)
     # # save list to local mongoDB
-    # mongoDB.saveData(memberCollection, memberList)
+    # mongoDB.saveData(mongoDB.getMemberCollection(), memberList)
     # # get a list of member username
-    # list = mongoDB.getMemberUsernameList(memberCollection)
+    # list = mongoDB.getMemberUsernameList(mongoDB.getMemberCollection())
     #
     # # get member information list from internet
     # infoList = request.getUserInformationList(list)
     # # save list to local mongoDB
-    # mongoDB.saveData(memberInfoCollection, infoList)
+    # mongoDB.saveData(mongoDB.getMemberInfoCollection(), infoList)
+    #
+    # analyse.analyseLocations(mongoDB.getMemberInfoCollection())
 
-    analyse.analyseLocations(memberInfoCollection)
+
+    analyse.anaylyseMembersAbility(mongoDB.getMemberInfoCollection())
 
 
 main()
